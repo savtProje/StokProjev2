@@ -7,7 +7,7 @@ using System.Web.Security;
 
 namespace PersonelMVCUII.Security
 {
-    public class PersonelRoleProvider : RoleProvider
+    public class KullanıcıRol : RoleProvider
     {
         public override string ApplicationName
         {
@@ -42,9 +42,9 @@ namespace PersonelMVCUII.Security
 
         public override string[] GetRolesForUser(string username)
         {
-            PersonelDbEntities1 db = new PersonelDbEntities1();
-            var kullanici = db.Kullanici.FirstOrDefault(x => x.Ad == username);
-            return new string[] { kullanici.Role };
+            DepoYonetimSistemiEntities db = new DepoYonetimSistemiEntities();
+            var kullanici = db.Kullanici.FirstOrDefault(x => x.KullaniciAdi == username);
+            return new string[] { kullanici.Rol };
         }
 
         public override string[] GetUsersInRole(string roleName)

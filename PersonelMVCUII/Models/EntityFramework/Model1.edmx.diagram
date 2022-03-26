@@ -4,11 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d94729a4da8843e39650d2305d496291" Name="Diagram1">
-        <EntityTypeShape EntityType="PersonelDbModel.Departman" Width="1.5" PointX="0.75" PointY="1.5" />
-        <EntityTypeShape EntityType="PersonelDbModel.Personel" Width="1.5" PointX="3" PointY="1" />
-        <AssociationConnector Association="PersonelDbModel.FK_Personel_Departman" />
-        <EntityTypeShape EntityType="PersonelDbModel.Kullanici" Width="1.5" PointX="0.75" PointY="4.75" />
+      <Diagram DiagramId="7031446ff43d4dd2be51f513213fac9a" Name="Diagram1">
+        <EntityTypeShape EntityType="DepoYonetimSistemiModel.Kullanici" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DepoYonetimSistemiModel.Raf" Width="1.5" PointX="0.75" PointY="5.25" />
+        <EntityTypeShape EntityType="DepoYonetimSistemiModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DepoYonetimSistemiModel.Urun" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="DepoYonetimSistemiModel.UrunRafBilgisi" Width="1.5" PointX="3" PointY="1.125" />
+        <AssociationConnector Association="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Raf1" />
+        <AssociationConnector Association="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Urun" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

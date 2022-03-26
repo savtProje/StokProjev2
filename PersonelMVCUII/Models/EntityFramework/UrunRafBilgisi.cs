@@ -12,11 +12,13 @@ namespace PersonelMVCUII.Models.EntityFramework
     using System;
     using System.Collections.Generic;
     
-    public partial class Kullanici
+    public partial class UrunRafBilgisi
     {
         public int Id { get; set; }
-        public string KullaniciAdi { get; set; }
-        public string Sifre { get; set; }
-        public string Rol { get; set; }
+        public int UrunId { get; set; }
+        public int RafId { get; set; }
+    
+        public virtual Raf Raf { get; set; }
+        public virtual Urun Urun { get; set; }
     }
 }

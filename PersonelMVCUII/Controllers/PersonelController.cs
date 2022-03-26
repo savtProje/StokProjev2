@@ -33,9 +33,9 @@ namespace PersonelMVCUII.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var model = new PersonelFormViewModel()
+                var model = new UrunRafViewModel()
                 {
-                    Departmanlar = db.Departman.ToList(),
+                   Raf = db.
                     Personel = new Personel()
                 };
                 return View("PersonelForm", model);
@@ -78,9 +78,6 @@ namespace PersonelMVCUII.Controllers
             
         }
 
-        public int ToplamMaas()
-        {
-            return db.Personel.Sum(x => x.Maas).GetValueOrDefault();
-        }
+       
     }
 }

@@ -13,10 +13,10 @@ namespace PersonelMVCUII.Models.EntityFramework
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PersonelDbEntities1 : DbContext
+    public partial class DepoYonetimSistemiEntities : DbContext
     {
-        public PersonelDbEntities1()
-            : base("name=PersonelDbEntities1")
+        public DepoYonetimSistemiEntities()
+            : base("name=DepoYonetimSistemiEntities")
         {
         }
     
@@ -25,8 +25,10 @@ namespace PersonelMVCUII.Models.EntityFramework
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Departman> Departman { get; set; }
-        public virtual DbSet<Personel> Personel { get; set; }
         public virtual DbSet<Kullanici> Kullanici { get; set; }
+        public virtual DbSet<Raf> Raf { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<Urun> Urun { get; set; }
+        public virtual DbSet<UrunRafBilgisi> UrunRafBilgisi { get; set; }
     }
 }

@@ -11,21 +11,20 @@ namespace PersonelMVCUII.Models.EntityFramework
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    public partial class Departman
+    
+    public partial class Raf
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Departman()
+        public Raf()
         {
-            this.Personel = new HashSet<Personel>();
+            this.UrunRafBilgisi = new HashSet<UrunRafBilgisi>();
         }
     
         public int Id { get; set; }
-        [Required]
-        public string Ad { get; set; }
+        public Nullable<int> Kapasite { get; set; }
+        public Nullable<int> AnlıkKapasite { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Personel> Personel { get; set; }
+        public virtual ICollection<UrunRafBilgisi> UrunRafBilgisi { get; set; }
     }
 }
