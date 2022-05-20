@@ -55,6 +55,11 @@ namespace PersonelMVCUII.Controllers
                     model.Mesaj = "Raf kapasitesi taşacak lütfen raf kapasitesini artırınız";
                     return View("_Mesaj", model);
                 }
+                else if (urun.ToplamUrunSayisi < 1)
+                {
+                    model.Mesaj = "Ürün sayısı 1'den düşük olamaz";
+                    return View("_Mesaj", model);
+                }
                 UrunRafBilgisi urunRaf = new UrunRafBilgisi
                 {
                     UrunId = urun.Id,

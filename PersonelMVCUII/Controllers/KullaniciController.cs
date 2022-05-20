@@ -46,7 +46,7 @@ namespace PersonelMVCUII.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Ad,Sifre,Role")] Kullanici kullanici)
+        public ActionResult Create(Kullanici kullanici)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace PersonelMVCUII.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Ad,Sifre,Role")] Kullanici kullanici)
+        public ActionResult Edit(Kullanici kullanici)
         {
             if (ModelState.IsValid)
             {

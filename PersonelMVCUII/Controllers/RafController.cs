@@ -48,6 +48,11 @@ namespace PersonelMVCUII.Controllers
                     model.Mesaj = "öncelikle raf için kategori eklemeniz gerekiyor.";
                     return View("_Mesaj", model);
                 }
+                if(raf.Kapasite<1)
+                {
+                    model.Mesaj = "Rafın minimum kapasitesi 1'dir";
+                    return View("_Mesaj", model);
+                }
                 var raflist=db.Raf.ToList();
                 foreach (var item in raflist)
                 {
@@ -72,6 +77,11 @@ namespace PersonelMVCUII.Controllers
                 var guncellenecekRaf = db.Raf.Find(raf.Id);
                 if (guncellenecekRaf == null)
                     return HttpNotFound();
+                else if(guncellenecekRaf.AnlıkKapasite>=raf.Kapasite)
+                {
+                    model.Mesaj = "depomuzda belirttiğiniz kapasiteden fazla mal vardır";
+                    return View("_Mesaj",model);
+                }
                 else if(guncellenecekRaf.AnlıkKapasite<=raf.Kapasite)
                 {
                     guncellenecekRaf.Kapasite = raf.Kapasite;
@@ -82,7 +92,7 @@ namespace PersonelMVCUII.Controllers
                 else
                 {
                     model.Mesaj = "raf eklenemez kapasite düşük";
-                    return View("RafForm");
+                    return View("_Mesaj", model);
                 }
 
             }
