@@ -13,9 +13,13 @@
         <li class="nav-item">
             <a href="/Kategori" class="nav-link">Kategoriler</a>
         </li>
+        @if(@HttpContext.Current.User.IsInRole("A"))
+        {
         <li class="nav-item">
             <a href="/Kullanici" class="nav-link">Kullanıcılar</a>
         </li>
+        }
+
         <li class="nav-item">
             <a href="/Security/Logout" class="nav-link">Çıkış Yap</a>
         </li>
