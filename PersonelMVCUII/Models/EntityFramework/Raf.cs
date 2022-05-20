@@ -21,10 +21,12 @@ namespace PersonelMVCUII.Models.EntityFramework
         }
     
         public int Id { get; set; }
+        public int KategoriId { get; set; }
         public Nullable<int> Kapasite { get; set; }
         public Nullable<int> AnlıkKapasite { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UrunRafBilgisi> UrunRafBilgisi { get; set; }
+        public virtual Kategori Kategori { get; set; }
     }
 }

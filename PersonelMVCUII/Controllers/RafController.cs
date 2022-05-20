@@ -12,6 +12,7 @@ namespace PersonelMVCUII.Controllers
 {
     public class RafController : Controller
     {
+
         DepoYonetimSistemiEntities db = new DepoYonetimSistemiEntities();
 
         public ActionResult Index()
@@ -20,6 +21,14 @@ namespace PersonelMVCUII.Controllers
         }
         public ActionResult Yeni()
         {
+            var kategori = db.Kategori.ToList();
+            List<string> KategoriListesi = new List<string>();
+            foreach (var item in kategori)
+            {
+                KategoriListesi.Add(item.Kategoriler);
+            }
+            SelectList list = new SelectList(KategoriListesi);
+            ViewBag.Kategoriler = list;
 
             return View("RafForm", new Raf());
         }
@@ -34,8 +43,29 @@ namespace PersonelMVCUII.Controllers
             MesajViewModel model = new MesajViewModel();
             if (raf.Id == 0)
             {
-                db.Raf.Add(raf);
-                model.Mesaj = "raf başarıyla eklendi";
+                if(raf.Kategori.Kategoriler==null)
+                {
+                    model.Mesaj = "öncelikle raf için kategori eklemeniz gerekiyor.";
+                    return View("_Mesaj", model);
+                }
+                var raflist=db.Raf.ToList();
+                foreach (var item in raflist)
+                {
+                    if(item.Kategori.Kategoriler==raf.Kategori.Kategoriler && item.AnlıkKapasite<item.Kapasite)
+                    {
+                        model.Mesaj = "öncelikle boşta olan rafı doldurmanız gerekiyor.";
+                        return View("_Mesaj", model);
+                    }
+                    else if(item.AnlıkKapasite == item.Kapasite && item.Kategori.Kategoriler == raf.Kategori.Kategoriler)
+                    {
+                        model.Mesaj = "Raf tamamen dolu ise kapasite artırımı yapabilirsiniz.";
+                        return View("_Mesaj", model);
+                    }
+                }
+
+                    raf.AnlıkKapasite = 0;
+                    db.Raf.Add(raf);
+                    model.Mesaj = "raf başarıyla eklendi";
             }
             else
             {
@@ -45,6 +75,7 @@ namespace PersonelMVCUII.Controllers
                 else if(guncellenecekRaf.AnlıkKapasite<=raf.Kapasite)
                 {
                     guncellenecekRaf.Kapasite = raf.Kapasite;
+                    guncellenecekRaf.Kategori.Kategoriler = raf.Kategori.Kategoriler;
                     db.Entry(guncellenecekRaf).State = EntityState.Modified;
                     model.Mesaj = "raf başarıyla güncellendi";
                 }
@@ -60,7 +91,6 @@ namespace PersonelMVCUII.Controllers
             model.Status = true;
             model.Linktext = "Raf Listesi";
             model.Url = "/Raf";
-            //  return RedirectToAction("Index", "Departman");
             return View("_Mesaj", model);
         }
 
@@ -86,18 +116,19 @@ namespace PersonelMVCUII.Controllers
                 return View("_Mesaj",model);
             }
             var raftakiUrunler = db.UrunRafBilgisi.Where(x => x.RafId == id).ToList();
-
+            var kategori = db.Kategori.Where(x => x.Kategoriler == silinecekRaf.Kategori.Kategoriler).FirstOrDefault();
+            
 
             foreach (var item in raftakiUrunler)
             {
                 db.UrunRafBilgisi.Remove(item);
+                var urun = db.Urun.Where(x => x.Id == item.Id).FirstOrDefault();
+                db.Urun.Remove(urun);
             }
-            
             db.Raf.Remove(silinecekRaf);
+            db.Kategori.Remove(kategori);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
     }
 }

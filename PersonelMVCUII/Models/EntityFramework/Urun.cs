@@ -21,11 +21,11 @@ namespace PersonelMVCUII.Models.EntityFramework
         }
     
         public int Id { get; set; }
+        public string Kategori { get; set; }
         public string UrunAdi { get; set; }
         public Nullable<System.DateTime> SonTuketimTarihi { get; set; }
         public Nullable<double> UrunFiyati { get; set; }
-        public string ToplamUrunSayisi { get; set; }
-        public string Kategori { get; set; }
+        public Nullable<int> ToplamUrunSayisi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UrunRafBilgisi> UrunRafBilgisi { get; set; }

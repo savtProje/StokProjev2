@@ -26,9 +26,10 @@ namespace PersonelMVCUII.Models.EntityFramework
         }
     
         public virtual DbSet<Kullanici> Kullanici { get; set; }
-        public virtual DbSet<Raf> Raf { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<Urun> Urun { get; set; }
         public virtual DbSet<UrunRafBilgisi> UrunRafBilgisi { get; set; }
+        public virtual DbSet<Raf> Raf { get; set; }
+        public virtual DbSet<Kategori> Kategori { get; set; }
+        public virtual DbSet<Urun> Urun { get; set; }
     }
 }
