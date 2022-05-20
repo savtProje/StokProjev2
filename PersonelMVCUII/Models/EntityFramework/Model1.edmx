@@ -4,147 +4,283 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PersonelDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Departman">
+    <Schema Namespace="DepoYonetimSistemiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kategori">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Ad" Type="nvarchar" MaxLength="50" />
+          <Property Name="Kategoriler" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Kullanici">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Ad" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Sifre" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Role" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="KullaniciAdi" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sifre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Rol" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Personel">
+        <EntityType Name="Raf">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DepartmanId" Type="int" />
-          <Property Name="Ad" Type="nvarchar" MaxLength="50" />
-          <Property Name="Soyad" Type="nvarchar" MaxLength="50" />
-          <Property Name="Maas" Type="smallint" />
-          <Property Name="DogumTarihi" Type="smalldatetime" />
-          <Property Name="Cinsiyet" Type="bit" Nullable="false" />
-          <Property Name="EvliMi" Type="bit" Nullable="false" />
+          <Property Name="KategoriId" Type="int" Nullable="false" />
+          <Property Name="Kapasite" Type="int" />
+          <Property Name="AnlıkKapasite" Type="int" />
         </EntityType>
-        <Association Name="FK_Personel_Departman">
-          <End Role="Departman" Type="Self.Departman" Multiplicity="0..1" />
-          <End Role="Personel" Type="Self.Personel" Multiplicity="*" />
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Urun">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Kategori" Type="nvarchar" MaxLength="50" />
+          <Property Name="UrunAdi" Type="nvarchar" MaxLength="50" />
+          <Property Name="SonTuketimTarihi" Type="date" />
+          <Property Name="UrunFiyati" Type="float" />
+          <Property Name="ToplamUrunSayisi" Type="int" />
+        </EntityType>
+        <EntityType Name="UrunRafBilgisi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UrunId" Type="int" Nullable="false" />
+          <Property Name="RafId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_UrunRafBilgisi_Raf1">
+          <End Role="Raf" Type="Self.Raf" Multiplicity="1" />
+          <End Role="UrunRafBilgisi" Type="Self.UrunRafBilgisi" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Departman">
+            <Principal Role="Raf">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Personel">
-              <PropertyRef Name="DepartmanId" />
+            <Dependent Role="UrunRafBilgisi">
+              <PropertyRef Name="RafId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PersonelDbModelStoreContainer">
-          <EntitySet Name="Departman" EntityType="Self.Departman" Schema="dbo" store:Type="Tables" />
+        <Association Name="FK_UrunRafBilgisi_Urun">
+          <End Role="Urun" Type="Self.Urun" Multiplicity="1" />
+          <End Role="UrunRafBilgisi" Type="Self.UrunRafBilgisi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Urun">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UrunRafBilgisi">
+              <PropertyRef Name="UrunId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DepoYonetimSistemiModelStoreContainer">
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Kullanici" EntityType="Self.Kullanici" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Personel" EntityType="Self.Personel" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Personel_Departman" Association="Self.FK_Personel_Departman">
-            <End Role="Departman" EntitySet="Departman" />
-            <End Role="Personel" EntitySet="Personel" />
+          <EntitySet Name="Raf" EntityType="Self.Raf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Urun" EntityType="Self.Urun" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UrunRafBilgisi" EntityType="Self.UrunRafBilgisi" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_UrunRafBilgisi_Raf1" Association="Self.FK_UrunRafBilgisi_Raf1">
+            <End Role="Raf" EntitySet="Raf" />
+            <End Role="UrunRafBilgisi" EntitySet="UrunRafBilgisi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UrunRafBilgisi_Urun" Association="Self.FK_UrunRafBilgisi_Urun">
+            <End Role="Urun" EntitySet="Urun" />
+            <End Role="UrunRafBilgisi" EntitySet="UrunRafBilgisi" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="PersonelDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="PersonelDbEntities1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Departman" EntityType="PersonelDbModel.Departman" />
-          <EntitySet Name="Personel" EntityType="PersonelDbModel.Personel" />
-          <AssociationSet Name="FK_Personel_Departman" Association="PersonelDbModel.FK_Personel_Departman">
-            <End Role="Departman" EntitySet="Departman" />
-            <End Role="Personel" EntitySet="Personel" />
+      <Schema Namespace="DepoYonetimSistemiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DepoYonetimSistemiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kullanici" EntityType="DepoYonetimSistemiModel.Kullanici" />
+          <EntitySet Name="sysdiagrams" EntityType="DepoYonetimSistemiModel.sysdiagrams" />
+          <EntitySet Name="UrunRafBilgisi" EntityType="DepoYonetimSistemiModel.UrunRafBilgisi" />
+          <EntitySet Name="Raf" EntityType="DepoYonetimSistemiModel.Raf" />
+          <AssociationSet Name="FK_UrunRafBilgisi_Raf1" Association="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Raf1">
+            <End Role="Raf" EntitySet="Raf" />
+            <End Role="UrunRafBilgisi" EntitySet="UrunRafBilgisi" />
           </AssociationSet>
-          <EntitySet Name="Kullanici" EntityType="PersonelDbModel.Kullanici" />
+          <EntitySet Name="Kategori" EntityType="DepoYonetimSistemiModel.Kategori" />
+          <AssociationSet Name="FK_Raf_Kategori" Association="DepoYonetimSistemiModel.FK_Raf_Kategori">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Raf" EntitySet="Raf" />
+          </AssociationSet>
+          <EntitySet Name="Urun" EntityType="DepoYonetimSistemiModel.Urun" />
+          <AssociationSet Name="FK_UrunRafBilgisi_Urun" Association="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Urun">
+            <End Role="Urun" EntitySet="Urun" />
+            <End Role="UrunRafBilgisi" EntitySet="UrunRafBilgisi" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Departman">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Personel" Relationship="PersonelDbModel.FK_Personel_Departman" FromRole="Departman" ToRole="Personel" />
-        </EntityType>
-        <EntityType Name="Personel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DepartmanId" Type="Int32" />
-          <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Maas" Type="Int16" />
-          <Property Name="DogumTarihi" Type="DateTime" Precision="0" />
-          <Property Name="Cinsiyet" Type="Boolean" Nullable="false" />
-          <Property Name="EvliMi" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Departman" Relationship="PersonelDbModel.FK_Personel_Departman" FromRole="Personel" ToRole="Departman" />
-        </EntityType>
-        <Association Name="FK_Personel_Departman">
-          <End Type="PersonelDbModel.Departman" Role="Departman" Multiplicity="0..1" />
-          <End Type="PersonelDbModel.Personel" Role="Personel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Departman">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Personel">
-              <PropertyRef Name="DepartmanId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Kullanici">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ad" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Sifre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Role" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="KullaniciAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Rol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-      </Schema>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="UrunRafBilgisi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UrunId" Type="Int32" Nullable="false" />
+          <Property Name="RafId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Raf" Relationship="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Raf1" FromRole="UrunRafBilgisi" ToRole="Raf" />
+          <NavigationProperty Name="Urun" Relationship="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Urun" FromRole="UrunRafBilgisi" ToRole="Urun" />
+        </EntityType>
+        <EntityType Name="Raf">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KategoriId" Type="Int32" Nullable="false" />
+          <Property Name="Kapasite" Type="Int32" />
+          <Property Name="AnlıkKapasite" Type="Int32" />
+          <NavigationProperty Name="UrunRafBilgisi" Relationship="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Raf1" FromRole="Raf" ToRole="UrunRafBilgisi" />
+          <NavigationProperty Name="Kategori" Relationship="DepoYonetimSistemiModel.FK_Raf_Kategori" FromRole="Raf" ToRole="Kategori" />
+        </EntityType>
+        <Association Name="FK_UrunRafBilgisi_Raf1">
+          <End Type="DepoYonetimSistemiModel.Raf" Role="Raf" Multiplicity="1" />
+          <End Type="DepoYonetimSistemiModel.UrunRafBilgisi" Role="UrunRafBilgisi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Raf">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UrunRafBilgisi">
+              <PropertyRef Name="RafId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kategoriler" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Raf" Relationship="DepoYonetimSistemiModel.FK_Raf_Kategori" FromRole="Kategori" ToRole="Raf" />
+        </EntityType>
+        <Association Name="FK_Raf_Kategori">
+          <End Type="DepoYonetimSistemiModel.Kategori" Role="Kategori" Multiplicity="1" />
+          <End Type="DepoYonetimSistemiModel.Raf" Role="Raf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raf">
+              <PropertyRef Name="KategoriId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Urun">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kategori" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UrunAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SonTuketimTarihi" Type="DateTime" Precision="0" />
+          <Property Name="UrunFiyati" Type="Double" />
+          <Property Name="ToplamUrunSayisi" Type="Int32" />
+          <NavigationProperty Name="UrunRafBilgisi" Relationship="DepoYonetimSistemiModel.FK_UrunRafBilgisi_Urun" FromRole="Urun" ToRole="UrunRafBilgisi" />
+        </EntityType>
+        <Association Name="FK_UrunRafBilgisi_Urun">
+          <End Type="DepoYonetimSistemiModel.Urun" Role="Urun" Multiplicity="1" />
+          <End Type="DepoYonetimSistemiModel.UrunRafBilgisi" Role="UrunRafBilgisi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Urun">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UrunRafBilgisi">
+              <PropertyRef Name="UrunId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PersonelDbModelStoreContainer" CdmEntityContainer="PersonelDbEntities1">
-          <EntitySetMapping Name="Departman">
-            <EntityTypeMapping TypeName="PersonelDbModel.Departman">
-              <MappingFragment StoreEntitySet="Departman">
-                <ScalarProperty Name="Ad" ColumnName="Ad" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Personel">
-            <EntityTypeMapping TypeName="PersonelDbModel.Personel">
-              <MappingFragment StoreEntitySet="Personel">
-                <ScalarProperty Name="EvliMi" ColumnName="EvliMi" />
-                <ScalarProperty Name="Cinsiyet" ColumnName="Cinsiyet" />
-                <ScalarProperty Name="DogumTarihi" ColumnName="DogumTarihi" />
-                <ScalarProperty Name="Maas" ColumnName="Maas" />
-                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
-                <ScalarProperty Name="Ad" ColumnName="Ad" />
-                <ScalarProperty Name="DepartmanId" ColumnName="DepartmanId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+        <EntityContainerMapping StorageEntityContainer="DepoYonetimSistemiModelStoreContainer" CdmEntityContainer="DepoYonetimSistemiEntities">
           <EntitySetMapping Name="Kullanici">
-            <EntityTypeMapping TypeName="PersonelDbModel.Kullanici">
+            <EntityTypeMapping TypeName="DepoYonetimSistemiModel.Kullanici">
               <MappingFragment StoreEntitySet="Kullanici">
-                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
                 <ScalarProperty Name="Sifre" ColumnName="Sifre" />
-                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="KullaniciAdi" ColumnName="KullaniciAdi" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DepoYonetimSistemiModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UrunRafBilgisi">
+            <EntityTypeMapping TypeName="DepoYonetimSistemiModel.UrunRafBilgisi">
+              <MappingFragment StoreEntitySet="UrunRafBilgisi">
+                <ScalarProperty Name="RafId" ColumnName="RafId" />
+                <ScalarProperty Name="UrunId" ColumnName="UrunId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Raf">
+            <EntityTypeMapping TypeName="DepoYonetimSistemiModel.Raf">
+              <MappingFragment StoreEntitySet="Raf">
+                <ScalarProperty Name="AnlıkKapasite" ColumnName="AnlıkKapasite" />
+                <ScalarProperty Name="Kapasite" ColumnName="Kapasite" />
+                <ScalarProperty Name="KategoriId" ColumnName="KategoriId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kategori">
+            <EntityTypeMapping TypeName="DepoYonetimSistemiModel.Kategori">
+              <MappingFragment StoreEntitySet="Kategori">
+                <ScalarProperty Name="Kategoriler" ColumnName="Kategoriler" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Urun">
+            <EntityTypeMapping TypeName="DepoYonetimSistemiModel.Urun">
+              <MappingFragment StoreEntitySet="Urun">
+                <ScalarProperty Name="ToplamUrunSayisi" ColumnName="ToplamUrunSayisi" />
+                <ScalarProperty Name="UrunFiyati" ColumnName="UrunFiyati" />
+                <ScalarProperty Name="SonTuketimTarihi" ColumnName="SonTuketimTarihi" />
+                <ScalarProperty Name="UrunAdi" ColumnName="UrunAdi" />
+                <ScalarProperty Name="Kategori" ColumnName="Kategori" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

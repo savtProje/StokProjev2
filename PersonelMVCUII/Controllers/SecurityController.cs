@@ -8,11 +8,11 @@ using System.Web.Security;
 
 namespace PersonelMVCUII.Controllers
 {
-    
+
     public class SecurityController : Controller
     {
 
-        PersonelDbEntities1 db = new PersonelDbEntities1();
+        DepoYonetimSistemiEntities db = new DepoYonetimSistemiEntities();
         // GET: Security
         [AllowAnonymous]
         public ActionResult Login()
@@ -23,18 +23,18 @@ namespace PersonelMVCUII.Controllers
         [AllowAnonymous]
         public ActionResult Login(Kullanici kullanici)
         {
-            var kullaniciInDb = db.Kullanici.FirstOrDefault(x=>x.Ad==kullanici.Ad && x.Sifre==kullanici.Sifre);
-            if(kullaniciInDb!=null)
+            var kullaniciInDb = db.Kullanici.FirstOrDefault(x => x.KullaniciAdi == kullanici.KullaniciAdi && x.Sifre == kullanici.Sifre);
+            if (kullaniciInDb != null)
             {
-                FormsAuthentication.SetAuthCookie(kullaniciInDb.Ad, false);
-                return RedirectToAction("Index", "Departman");
+                FormsAuthentication.SetAuthCookie(kullaniciInDb.KullaniciAdi, false);
+                return RedirectToAction("Index", "Urun");
             }
             else
             {
                 ViewBag.Mesaj = "Geçersiz Kullanıcı Adı veya Şifre";
                 return View();
             }
-           
+
         }
         public ActionResult Logout()
         {

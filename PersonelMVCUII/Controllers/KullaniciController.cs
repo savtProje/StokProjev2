@@ -12,7 +12,7 @@ namespace PersonelMVCUII.Controllers
 {
     public class KullaniciController : Controller
     {
-        private PersonelDbEntities1 db = new PersonelDbEntities1();
+        private DepoYonetimSistemiEntities db = new DepoYonetimSistemiEntities();
 
         // GET: Kullanici
         public ActionResult Index()
