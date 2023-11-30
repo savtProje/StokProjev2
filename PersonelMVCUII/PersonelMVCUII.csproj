@@ -386,6 +386,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
@@ -546,7 +547,6 @@
     <Content Include="Views\Kullanici\Edit.cshtml" />
     <Content Include="Views\Kullanici\Index.cshtml" />
     <Content Include="Views\Security\Login.cshtml" />
-    <Content Include="Views\Raf\PersonelleriListele.cshtml" />
     <Content Include="Views\Shared\_Mesaj.cshtml" />
     <Content Include="Views\Kategori\Index.cshtml" />
     <Content Include="Views\Kategori\KategoriForm.cshtml" />

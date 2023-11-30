@@ -38,17 +38,17 @@ namespace PersonelMVCUII.Controllers
                 db.Kategori.Add(kategori);
                 model.Mesaj = "kategori başarıyla eklendi";
             }
-            else
-            {
-                var guncellenecekKategori = db.Kategori.Find(kategori.Id);
-                if (guncellenecekKategori == null)
-                    return HttpNotFound();
-                guncellenecekKategori.Kategoriler = kategori.Kategoriler;
-                db.Entry(guncellenecekKategori).State = EntityState.Modified;
-                model.Mesaj = "kategori başarıyla güncellendi";
+            //else
+            //{
+            //    var guncellenecekKategori = db.Kategori.Find(kategori.Id);
+            //    if (guncellenecekKategori == null)
+            //        return HttpNotFound();
+            //    guncellenecekKategori.Kategoriler = kategori.Kategoriler;
+            //    db.Entry(guncellenecekKategori).State = EntityState.Modified;
+            //    model.Mesaj = "kategori başarıyla güncellendi";
 
 
-            }
+            //}
 
             db.SaveChanges();
             model.Status = true;
@@ -58,16 +58,16 @@ namespace PersonelMVCUII.Controllers
             return View("_Mesaj", model);
         }
 
-        public ActionResult Guncelle(int id)
-        {
-            var model = db.Kategori.Find(id);
-            if (model == null)
-            {
-                return HttpNotFound();
-            }
-            return View("KategoriForm", model);
+        //public ActionResult Guncelle(int id)
+        //{
+        //    var model = db.Kategori.Find(id);
+        //    if (model == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View("KategoriForm", model);
 
-        }
+        //}
 
         public ActionResult Sil(int id)
         {

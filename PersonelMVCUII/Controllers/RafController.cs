@@ -86,6 +86,14 @@ namespace PersonelMVCUII.Controllers
                 {
                     guncellenecekRaf.Kapasite = raf.Kapasite;
                     guncellenecekRaf.Kategori.Kategoriler = raf.Kategori.Kategoriler;
+                    var urunler = db.UrunRafBilgisi.Where(x => x.RafId == raf.Id).ToList();
+                    foreach (var item in urunler)
+                    {
+                        var urun = db.Urun.Where(x => x.Id == item.Id).FirstOrDefault();
+                        urun.Kategori= raf.Kategori.Kategoriler;
+                        db.Entry(urun).State = EntityState.Modified;
+                    }
+                    
                     db.Entry(guncellenecekRaf).State = EntityState.Modified;
                     model.Mesaj = "raf başarıyla güncellendi";
                 }
